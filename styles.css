@@ -1,0 +1,162 @@
+/* ==========================================
+ *  弹幕侧边栏样式
+ *  全部使用硬件加速动画 零性能损耗
+ * ==========================================
+ */
+
+.live-danmaku-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--background-primary);
+}
+
+.danmaku-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.danmaku-item {
+  --danmaku-bg: var(--interactive-normal);
+  --danmaku-color: var(--text-normal);
+  --danmaku-border: color-mix(in srgb, var(--background-modifier-border) 80%, transparent);
+  --danmaku-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: 20px;
+  left: 12px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: var(--danmaku-bg);
+  color: var(--danmaku-color);
+  border: 1px solid var(--danmaku-border);
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: calc(100% - 24px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translate3d(var(--danmaku-offset-x, 0px), 0, 0);
+  will-change: transform, opacity;
+  box-shadow: var(--danmaku-shadow);
+}
+
+.danmaku-item--input {
+  --danmaku-bg: color-mix(in srgb, var(--interactive-normal) 90%, transparent);
+}
+
+.danmaku-item--idle {
+  --danmaku-bg: color-mix(in srgb, var(--background-secondary) 86%, transparent);
+  --danmaku-color: var(--text-muted);
+  --danmaku-border: color-mix(in srgb, var(--background-modifier-border) 90%, transparent);
+}
+
+.danmaku-item--milestone {
+  --danmaku-bg: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 70%, #ffc94d 30%),
+    color-mix(in srgb, var(--color-accent) 35%, #ff8e5a 65%)
+  );
+  --danmaku-color: #ffffff;
+  --danmaku-border: color-mix(in srgb, #ffffff 35%, transparent);
+  --danmaku-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding: 8px 14px;
+}
+
+.danmaku-item--milestone::before {
+  content: attr(data-badge);
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--color-accent) 70%, #3b2d00 30%);
+  background: color-mix(in srgb, #ffffff 86%, transparent);
+  vertical-align: middle;
+}
+
+.danmaku-animate {
+  animation: danmaku-scroll-up 4200ms cubic-bezier(0.1, 0.55, 0.15, 1) forwards;
+}
+
+.danmaku-item--idle.danmaku-animate {
+  animation-duration: 4600ms;
+}
+
+.danmaku-animate--milestone {
+  animation:
+    danmaku-pop-in 260ms cubic-bezier(0.22, 0.9, 0.25, 1.2) forwards,
+    danmaku-scroll-up-milestone 5340ms 260ms cubic-bezier(0.1, 0.55, 0.15, 1) forwards;
+}
+
+@keyframes danmaku-scroll-up {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--danmaku-offset-x, 0px), 0, 0);
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--danmaku-offset-x, 0px), calc(-100vh + 60px), 0);
+  }
+}
+
+@keyframes danmaku-pop-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--danmaku-offset-x, 0px), 10px, 0) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--danmaku-offset-x, 0px), 0, 0) scale(1);
+  }
+}
+
+@keyframes danmaku-scroll-up-milestone {
+  0% {
+    opacity: 1;
+    transform: translate3d(var(--danmaku-offset-x, 0px), 0, 0) scale(1);
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--danmaku-offset-x, 0px), calc(-100vh + 60px), 0) scale(1);
+  }
+}
+
+.danmaku-empty-state {
+  position: absolute;
+  inset: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 1px dashed var(--background-modifier-border);
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: left;
+  white-space: pre-line;
+  background-color: color-mix(in srgb, var(--background-secondary) 75%, transparent);
+}
+
+.danmaku-empty-state.is-hidden {
+  display: none;
+}
