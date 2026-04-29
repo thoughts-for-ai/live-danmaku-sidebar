@@ -3,7 +3,7 @@
   "name": "Live Danmaku Sidebar",
   "version": "0.3.1",
   "minAppVersion": "1.0.0",
-  "description": "写作侧边栏弹幕系统，支持从 Markdown 文件夹加载输入/停顿弹幕",
+  "description": "A writing companion with live-streaming danmaku (bullet comments) for encouragement while you write.",
   "author": "thoughts-for-ai",
   "authorUrl": "https://github.com/thoughts-for-ai",
   "isDesktopOnly": true
